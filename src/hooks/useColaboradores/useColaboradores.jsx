@@ -1,12 +1,12 @@
-import { useState, useCallback, useMemo, useEffect } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import ColaboradoresService from '../../services/Colaboradores/ColaboradoresService';
+import { useState, useEffect } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import ColaboradoresService from "../../services/Colaboradores/ColaboradoresService";
 
 export default function useColaboradores() {
   const service = ColaboradoresService;
   const [openAlertError, setOpenAlertError] = useState(false);
   const [openAlertSuccess, setOpenAlertSuccess] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
 
   const queryClient = useQueryClient();
 
@@ -15,7 +15,7 @@ export default function useColaboradores() {
     isLoading: isLoadingColaboradores,
     error: errorColaboradores,
   } = useQuery({
-    queryKey: ['colaboradores'],
+    queryKey: ["colaboradores"],
     queryFn: service.getColaboradores,
     retry: 1,
     refetchOnWindowFocus: false,
@@ -24,14 +24,14 @@ export default function useColaboradores() {
   const addColaboradorMutation = useMutation({
     mutationFn: (colaborador) => service.addColaborador(colaborador),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['colaboradores'] });
+      queryClient.invalidateQueries({ queryKey: ["colaboradores"] });
       setOpenAlertSuccess(true);
     },
   });
 
   useEffect(() => {
     if (errorColaboradores) {
-      setErrorMessage('Erro ao carregar colaboradores');
+      setErrorMessage("Erro ao carregar colaboradores");
       setOpenAlertError(true);
     }
   }, [errorColaboradores]);
