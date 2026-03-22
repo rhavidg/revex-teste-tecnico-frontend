@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import ColaboradoresService from "../../services/Colaboradores/ColaboradoresService";
 
@@ -9,6 +9,11 @@ export default function useColaboradores() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const queryClient = useQueryClient();
+
+  const closeAlerts = useCallback(() => {
+    setOpenAlertError(false);
+    setOpenAlertSuccess(false);
+  }, []);
 
   const {
     data: colaboradores,
@@ -27,6 +32,12 @@ export default function useColaboradores() {
       queryClient.invalidateQueries({ queryKey: ["colaboradores"] });
       setOpenAlertSuccess(true);
     },
+    onError: (error) => {
+      setErrorMessage(
+        error.response?.data?.messages || "Erro ao adicionar colaborador",
+      );
+      setOpenAlertError(true);
+    },
   });
 
   useEffect(() => {
@@ -43,5 +54,6 @@ export default function useColaboradores() {
     openAlertError,
     openAlertSuccess,
     addColaboradorMutation,
+    closeAlerts,
   };
 }
