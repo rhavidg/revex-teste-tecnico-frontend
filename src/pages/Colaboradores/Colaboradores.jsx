@@ -1,22 +1,18 @@
-import ContainerInterno from "../../components/ContainerInterno/ContainerInterno";
-import useColaboradores from "../../hooks/useColaboradores/useColaboradores";
-import { useState, useMemo, useCallback } from "react";
-import { ptBR } from "@mui/x-data-grid/locales";
-import { DataGrid } from "@mui/x-data-grid";
-import Loader from "../../components/Loader/Loader";
-import { Box, Typography } from "@mui/material";
-import { People } from "@mui/icons-material";
-import {
-  headerContainer,
-  headerIconBox,
-  titleStyles,
-} from "./Colaboradores.styles";
-import GridAcoes from "../../components/GridAcoes/GridAcoes";
-import ViewModal from "../../components/ViewModal/ViewModal";
-import InfoIcon from "@mui/icons-material/Info";
+import ContainerInterno from '../../components/ContainerInterno/ContainerInterno';
+import useColaboradores from '../../hooks/useColaboradores/useColaboradores';
+import { useState, useMemo, useCallback } from 'react';
+import { ptBR } from '@mui/x-data-grid/locales';
+import { DataGrid } from '@mui/x-data-grid';
+import Loader from '../../components/Loader/Loader';
+import { Box, Typography } from '@mui/material';
+import { People } from '@mui/icons-material';
+import { headerContainer, headerIconBox, titleStyles } from '../../styles';
+import GridAcoes from '../../components/GridAcoes/GridAcoes';
+import ViewModal from '../../components/ViewModal/ViewModal';
+import InfoIcon from '@mui/icons-material/Info';
 
 export default function Colaboradores() {
-  const { colaboradores, isLoadingColaboradores } = useColaboradores();
+  const { colaboradores, isLoadingColaboradores } = useColaboradores({ getEnabled: true });
   const [selectedItem, setSelectedItem] = useState(null);
   const [viewModalOpen, setViewModalOpen] = useState(false);
 
@@ -27,26 +23,24 @@ export default function Colaboradores() {
 
   const columns = useMemo(() => {
     return [
-      { field: "id", headerName: "ID", width: 100 },
+      { field: 'id', headerName: 'ID', width: 100 },
       {
-        field: "nomeCompleto",
-        headerName: "Nome Completo",
+        field: 'nomeCompleto',
+        headerName: 'Nome Completo',
         width: 500,
       },
       {
-        field: "cargo",
-        headerName: "Cargo",
+        field: 'cargo',
+        headerName: 'Cargo',
         width: 350,
       },
       {
-        field: "acoes",
-        headerName: "Ações",
+        field: 'acoes',
+        headerName: 'Ações',
         flex: 1,
         sortable: false,
-        headerAlign: "center",
-        renderCell: (params) => (
-          <GridAcoes paramsRow={params.row} handleViewBtn={handleViewBtn} />
-        ),
+        headerAlign: 'center',
+        renderCell: (params) => <GridAcoes paramsRow={params.row} handleViewBtn={handleViewBtn} />,
       },
     ];
   }, [handleViewBtn]);
@@ -60,7 +54,7 @@ export default function Colaboradores() {
           {/* Header */}
           <Box sx={headerContainer}>
             <Box sx={headerIconBox}>
-              <People sx={{ fontSize: 32, color: "white" }} />
+              <People sx={{ fontSize: 32, color: 'white' }} />
             </Box>
 
             <Typography variant="h4" sx={titleStyles}>
@@ -71,15 +65,14 @@ export default function Colaboradores() {
               <InfoIcon
                 sx={(theme) => ({
                   background: theme.custom.gradient,
-                  color: "#fff",
-                  verticalAlign: "middle",
+                  color: '#fff',
+                  verticalAlign: 'middle',
                   mr: 1,
-                  borderRadius: "50%",
+                  borderRadius: '50%',
                 })}
               />
-              Para filtrar clique no cabeçalho de cada coluna. Para visualizar
-              os detalhes de um colaborador, clique no botão "Visualizar" na
-              coluna de ações.
+              Para filtrar clique no cabeçalho de cada coluna. Para visualizar os detalhes de um
+              colaborador, clique no botão "Visualizar" na coluna de ações.
             </Typography>
           </Box>
           <DataGrid
@@ -93,8 +86,8 @@ export default function Colaboradores() {
             localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
             sx={{
               border: 0,
-              marginTop: "20px",
-              width: "100%",
+              marginTop: '20px',
+              width: '100%',
             }}
           />
         </>
@@ -103,7 +96,6 @@ export default function Colaboradores() {
         open={viewModalOpen}
         onCancel={() => setViewModalOpen(false)}
         item={selectedItem}
-        variant={"servico"}
       />
     </ContainerInterno>
   );

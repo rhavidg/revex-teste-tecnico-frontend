@@ -1,52 +1,27 @@
-import Loader from "../../../components/Loader/Loader";
-import useColaboradores from "../../../hooks/useColaboradores/useColaboradores";
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  InputAdornment,
-} from "@mui/material";
-import {
-  PersonAdd,
-  Work,
-  CalendarToday,
-  Business,
-  AttachMoney,
-} from "@mui/icons-material";
-import { useState } from "react";
-import * as Yup from "yup";
-import ColaboradorSchema from "../../../schemas/ColaboradorSchema";
-import Alerts from "../../../components/Alerts/Alerts/Alerts";
-import MaskInput from "../../../components/MaskInput/MaskInput";
+import Loader from '../../../components/Loader/Loader';
+import useColaboradores from '../../../hooks/useColaboradores/useColaboradores';
+import { Box, Button, TextField, Typography, InputAdornment } from '@mui/material';
+import { PersonAdd, Work, CalendarToday, Business, AttachMoney } from '@mui/icons-material';
+import { useState } from 'react';
+import * as Yup from 'yup';
+import ColaboradorSchema from '../../../schemas/ColaboradorSchema';
+import Alerts from '../../../components/Alerts/Alerts/Alerts';
+import MaskInput from '../../../components/MaskInput/MaskInput';
 
-import {
-  headerContainer,
-  headerIconBox,
-  titleStyles,
-  textFieldStyles,
-  inputStyles,
-  buttonStyles,
-  iconStyles,
-  salaryAdornment,
-} from "./AddColaborador.styles";
-import ContainerInterno from "../../../components/ContainerInterno/ContainerInterno";
+import { textFieldStyles, inputStyles, iconStyles, salaryAdornment } from './AddColaborador.styles';
+import { headerContainer, headerIconBox, titleStyles, buttonStyles } from '../../../styles';
+import ContainerInterno from '../../../components/ContainerInterno/ContainerInterno';
 
 export default function AddColaborador() {
-  const {
-    addColaboradorMutation,
-    openAlertError,
-    openAlertSuccess,
-    errorMessage,
-    closeAlerts,
-  } = useColaboradores();
+  const { addColaboradorMutation, openAlertError, openAlertSuccess, errorMessage, closeAlerts } =
+    useColaboradores();
 
   const [form, setForm] = useState({
-    nomeCompleto: "",
-    cargo: "",
-    dataAdmissao: "",
-    setor: "",
-    salario: "",
+    nomeCompleto: '',
+    cargo: '',
+    dataAdmissao: '',
+    setor: '',
+    salario: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -55,7 +30,7 @@ export default function AddColaborador() {
     setForm({ ...form, [e.target.name]: e.target.value });
 
     if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: "" });
+      setErrors({ ...errors, [e.target.name]: '' });
     }
   };
 
@@ -68,11 +43,11 @@ export default function AddColaborador() {
       await addColaboradorMutation.mutateAsync(form);
 
       setForm({
-        nomeCompleto: "",
-        cargo: "",
-        dataAdmissao: "",
-        setor: "",
-        salario: "",
+        nomeCompleto: '',
+        cargo: '',
+        dataAdmissao: '',
+        setor: '',
+        salario: '',
       });
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -85,40 +60,40 @@ export default function AddColaborador() {
 
   const fields = [
     {
-      name: "nomeCompleto",
-      label: "Nome completo",
+      name: 'nomeCompleto',
+      label: 'Nome completo',
       icon: PersonAdd,
       required: true,
-      placeholder: "Ex: João Silva",
+      placeholder: 'Ex: João Silva',
     },
     {
-      name: "cargo",
-      label: "Cargo",
+      name: 'cargo',
+      label: 'Cargo',
       icon: Work,
       required: true,
-      placeholder: "Ex: Desenvolvedor Front-end",
+      placeholder: 'Ex: Desenvolvedor Front-end',
     },
     {
-      name: "dataAdmissao",
-      label: "Data de Admissão",
+      name: 'dataAdmissao',
+      label: 'Data de Admissão',
       icon: CalendarToday,
       required: true,
-      type: "date",
+      type: 'date',
       InputLabelProps: { shrink: true },
     },
     {
-      name: "setor",
-      label: "Setor",
+      name: 'setor',
+      label: 'Setor',
       icon: Business,
       required: false,
-      placeholder: "Ex: TI",
+      placeholder: 'Ex: TI',
     },
     {
-      name: "salario",
-      label: "Salário",
+      name: 'salario',
+      label: 'Salário',
       icon: AttachMoney,
       required: true,
-      placeholder: "Ex: 5.000,00",
+      placeholder: 'Ex: 5.000,00',
       inputComponent: MaskInput,
     },
   ];
@@ -131,7 +106,7 @@ export default function AddColaborador() {
         {/* Header */}
         <Box sx={headerContainer}>
           <Box sx={headerIconBox}>
-            <PersonAdd sx={{ fontSize: 32, color: "white" }} />
+            <PersonAdd sx={{ fontSize: 32, color: 'white' }} />
           </Box>
 
           <Typography variant="h4" sx={titleStyles}>
@@ -155,16 +130,14 @@ export default function AddColaborador() {
               onChange={handleChange}
               error={Boolean(errors[field.name])}
               helperText={errors[field.name]}
-              type={field.type || "text"}
+              type={field.type || 'text'}
               placeholder={field.placeholder}
               InputLabelProps={field.InputLabelProps || {}}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    {field.name === "salario" ? (
-                      <Typography sx={salaryAdornment(errors[field.name])}>
-                        R$
-                      </Typography>
+                    {field.name === 'salario' ? (
+                      <Typography sx={salaryAdornment(errors[field.name])}>R$</Typography>
                     ) : (
                       <field.icon sx={iconStyles(errors[field.name])} />
                     )}
@@ -184,9 +157,7 @@ export default function AddColaborador() {
             disabled={addColaboradorMutation.isPending}
             sx={buttonStyles}
           >
-            {addColaboradorMutation.isPending
-              ? "Cadastrando..."
-              : "Cadastrar Colaborador"}
+            {addColaboradorMutation.isPending ? 'Cadastrando...' : 'Cadastrar Colaborador'}
           </Button>
         </Box>
       </ContainerInterno>
@@ -196,7 +167,7 @@ export default function AddColaborador() {
         openAlertError={openAlertError}
         closeAlerts={closeAlerts}
         messageError={errorMessage}
-        messageSuccess={"Colaborador adicionado com sucesso!"}
+        messageSuccess={'Colaborador adicionado com sucesso!'}
       />
     </>
   );
