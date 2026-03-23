@@ -12,3 +12,15 @@ code {
   font-family:
     source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+.MuiDataGrid-cell {
+  display: flex;
+  align-items: center !important;
+  justify-content: center !important;
+}
+.MuiDataGrid-columnHeaderTitleContainer {
+  justify-content: center !important;
+}
+
+.MuiDataGrid-selectedRowCount {
+  display: none !important;
+}

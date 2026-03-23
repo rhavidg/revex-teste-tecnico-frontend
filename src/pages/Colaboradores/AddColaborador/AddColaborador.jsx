@@ -5,9 +5,7 @@ import {
   Button,
   TextField,
   Typography,
-  Paper,
   InputAdornment,
-  Fade,
 } from "@mui/material";
 import {
   PersonAdd,
@@ -23,8 +21,6 @@ import Alerts from "../../../components/Alerts/Alerts/Alerts";
 import MaskInput from "../../../components/MaskInput/MaskInput";
 
 import {
-  containerStyles,
-  paperStyles,
   headerContainer,
   headerIconBox,
   titleStyles,
@@ -34,6 +30,7 @@ import {
   iconStyles,
   salaryAdornment,
 } from "./AddColaborador.styles";
+import ContainerInterno from "../../../components/ContainerInterno/ContainerInterno";
 
 export default function AddColaborador() {
   const {
@@ -130,74 +127,69 @@ export default function AddColaborador() {
     <Loader />
   ) : (
     <>
-      <Fade in timeout={500}>
-        <Box sx={containerStyles}>
-          <Paper elevation={0} sx={paperStyles}>
-            {/* Header */}
-            <Box sx={headerContainer}>
-              <Box sx={headerIconBox}>
-                <PersonAdd sx={{ fontSize: 32, color: "white" }} />
-              </Box>
+      <ContainerInterno>
+        {/* Header */}
+        <Box sx={headerContainer}>
+          <Box sx={headerIconBox}>
+            <PersonAdd sx={{ fontSize: 32, color: "white" }} />
+          </Box>
 
-              <Typography variant="h4" sx={titleStyles}>
-                Adicionar Colaborador
-              </Typography>
+          <Typography variant="h4" sx={titleStyles}>
+            Adicionar Colaborador
+          </Typography>
 
-              <Typography variant="body2" color="text.secondary">
-                Preencha as informações abaixo para cadastrar um novo
-                colaborador
-              </Typography>
-            </Box>
-
-            {/* Form */}
-            <Box component="form" onSubmit={onSubmit}>
-              {fields.map((field) => (
-                <TextField
-                  key={field.name}
-                  fullWidth
-                  name={field.name}
-                  label={field.required ? `${field.label} *` : field.label}
-                  value={form[field.name]}
-                  onChange={handleChange}
-                  error={Boolean(errors[field.name])}
-                  helperText={errors[field.name]}
-                  type={field.type || "text"}
-                  placeholder={field.placeholder}
-                  InputLabelProps={field.InputLabelProps || {}}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        {field.name === "salario" ? (
-                          <Typography sx={salaryAdornment(errors[field.name])}>
-                            R$
-                          </Typography>
-                        ) : (
-                          <field.icon sx={iconStyles(errors[field.name])} />
-                        )}
-                      </InputAdornment>
-                    ),
-                    inputComponent: field.inputComponent || undefined,
-                    sx: inputStyles,
-                  }}
-                  sx={textFieldStyles}
-                />
-              ))}
-
-              <Button
-                fullWidth
-                type="submit"
-                variant="contained"
-                disabled={addColaboradorMutation.isPending}
-                sx={buttonStyles}
-              >
-                {addColaboradorMutation.isPending
-                  ? "Cadastrando..."
-                  : "Cadastrar Colaborador"}
-              </Button>
-            </Box>
-          </Paper>
+          <Typography variant="body2" color="text.secondary">
+            Preencha as informações abaixo para cadastrar um novo colaborador
+          </Typography>
         </Box>
-      </Fade>
+
+        {/* Form */}
+        <Box component="form" onSubmit={onSubmit}>
+          {fields.map((field) => (
+            <TextField
+              key={field.name}
+              fullWidth
+              name={field.name}
+              label={field.required ? `${field.label} *` : field.label}
+              value={form[field.name]}
+              onChange={handleChange}
+              error={Boolean(errors[field.name])}
+              helperText={errors[field.name]}
+              type={field.type || "text"}
+              placeholder={field.placeholder}
+              InputLabelProps={field.InputLabelProps || {}}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    {field.name === "salario" ? (
+                      <Typography sx={salaryAdornment(errors[field.name])}>
+                        R$
+                      </Typography>
+                    ) : (
+                      <field.icon sx={iconStyles(errors[field.name])} />
+                    )}
+                  </InputAdornment>
+                ),
+                inputComponent: field.inputComponent || undefined,
+                sx: inputStyles,
+              }}
+              sx={textFieldStyles}
+            />
+          ))}
+
+          <Button
+            fullWidth
+            type="submit"
+            variant="contained"
+            disabled={addColaboradorMutation.isPending}
+            sx={buttonStyles}
+          >
+            {addColaboradorMutation.isPending
+              ? "Cadastrando..."
+              : "Cadastrar Colaborador"}
+          </Button>
+        </Box>
+      </ContainerInterno>
 
       <Alerts
         openAlertSuccess={openAlertSuccess}
