@@ -97,8 +97,7 @@ export default function AddAtividade() {
   ];
 
   const selectOptions = [
-    { value: 'PENDENTE', label: 'Pendente' },
-    { value: 'EM ANDAMENTO', label: 'Em andamento' },
+    { value: 'EM_ANDAMENTO', label: 'Em andamento' },
     { value: 'CONCLUIDA', label: 'Concluída' },
   ];
 
@@ -184,6 +183,7 @@ export default function AddAtividade() {
               displayEmpty
               sx={selectStyles}
             >
+              <MenuItem value={'PENDENTE'}>Pendente</MenuItem>
               {selectOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
