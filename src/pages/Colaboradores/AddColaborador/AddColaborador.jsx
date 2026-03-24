@@ -40,7 +40,7 @@ export default function AddColaborador() {
 
     try {
       await ColaboradorSchema.validate(form, { abortEarly: false });
-      await addColaboradorMutation.mutateAsync(form);
+      addColaboradorMutation.mutate(form);
 
       setForm({
         nomeCompleto: '',

@@ -18,6 +18,10 @@ export const textFieldStyles = (descricao) => ({
   },
 });
 
+export const selectStyles = {
+  mb: 2.5,
+};
+
 export const inputStyles = {
   borderRadius: 2,
   '&:hover': {

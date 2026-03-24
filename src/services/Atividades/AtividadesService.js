@@ -19,5 +19,26 @@ const AtividadesService = {
       throw error;
     }
   },
+
+  async updateStatus(id, status) {
+    try {
+      const response = await axios.patch(`${BASE_URL}/atividades/${id}/status`, { status });
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao atualizar status da atividade:', error);
+      throw error;
+    }
+  },
+  async updateResponsavel(id, responsavelId) {
+    try {
+      const response = await axios.patch(`${BASE_URL}/atividades/${id}/responsavel`, {
+        responsavelId,
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao atualizar responsável da atividade:', error);
+      throw error;
+    }
+  },
 };
 export default AtividadesService;
