@@ -1,15 +1,20 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AddColaborador from "../pages/Colaboradores/AddColaborador/AddColaborador";
-import Colaboradores from "../pages/Colaboradores/Colaboradores";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import AddColaborador from '../pages/Colaboradores/AddColaborador/AddColaborador';
+import Colaboradores from '../pages/Colaboradores/Colaboradores';
+import AddAtividade from '../pages/Atividades/AddAtividade/AddAtividade';
 export default function AppRoutes() {
   const router = createBrowserRouter([
     {
-      path: "/colaboradores/adicionar",
+      path: '/colaboradores/adicionar',
       element: <AddColaborador />,
     },
     {
-      path: "/colaboradores",
+      path: '/colaboradores',
       element: <Colaboradores />,
+    },
+    {
+      path: '/atividades/adicionar',
+      element: <AddAtividade />,
     },
   ]);
   return <RouterProvider router={router} />;
