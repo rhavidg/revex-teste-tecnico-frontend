@@ -1,6 +1,6 @@
-import Loader from '../../../components/Loader/Loader';
-import useColaboradores from '../../../hooks/useColaboradores/useColaboradores';
-import useAtividades from '../../../hooks/useAtividades/useAtividades';
+import Loader from "../../../components/Loader/Loader";
+import useColaboradores from "../../../hooks/useColaboradores/useColaboradores";
+import useAtividades from "../../../hooks/useAtividades/useAtividades";
 import {
   Box,
   Button,
@@ -10,18 +10,28 @@ import {
   Select,
   MenuItem,
   InputLabel,
-} from '@mui/material';
-import { PersonAdd } from '@mui/icons-material';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-import DescriptionIcon from '@mui/icons-material/Description';
-import { useState } from 'react';
-import * as Yup from 'yup';
-import Alerts from '../../../components/Alerts/Alerts/Alerts';
-import AtividadeSchema from '../../../schemas/AtividadeSchema';
+} from "@mui/material";
+import { PersonAdd } from "@mui/icons-material";
+import AssignmentIcon from "@mui/icons-material/Assignment";
+import DescriptionIcon from "@mui/icons-material/Description";
+import { useState } from "react";
+import * as Yup from "yup";
+import Alerts from "../../../components/Alerts/Alerts/Alerts";
+import AtividadeSchema from "../../../schemas/AtividadeSchema";
 
-import { textFieldStyles, inputStyles, iconStyles, selectStyles } from './AddAtividade.styles';
-import { headerContainer, headerIconBox, titleStyles, buttonStyles } from '../../../styles';
-import ContainerInterno from '../../../components/ContainerInterno/ContainerInterno';
+import {
+  textFieldStyles,
+  inputStyles,
+  iconStyles,
+  selectStyles,
+} from "./AddAtividade.styles";
+import {
+  headerContainer,
+  headerIconBox,
+  titleStyles,
+  buttonStyles,
+} from "../../../styles";
+import ContainerInterno from "../../../components/ContainerInterno/ContainerInterno";
 
 export default function AddAtividade() {
   const { colaboradores, isLoadingColaboradores } = useColaboradores({
@@ -36,10 +46,10 @@ export default function AddAtividade() {
   } = useAtividades();
 
   const [form, setForm] = useState({
-    titulo: '',
-    descricao: '',
-    status: 'PENDENTE',
-    responsavel: '',
+    titulo: "",
+    descricao: "",
+    status: "PENDENTE",
+    responsavel: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -48,7 +58,7 @@ export default function AddAtividade() {
     setForm({ ...form, [e.target.name]: e.target.value });
 
     if (errors[e.target.name]) {
-      setErrors({ ...errors, [e.target.name]: '' });
+      setErrors({ ...errors, [e.target.name]: "" });
     }
   };
 
@@ -59,16 +69,16 @@ export default function AddAtividade() {
     try {
       const validatedForm = {
         ...form,
-        responsavel: form.responsavel === '' ? null : { id: form.responsavel },
+        responsavel: form.responsavel === "" ? null : { id: form.responsavel },
       };
       await AtividadeSchema.validate(validatedForm, { abortEarly: false });
       addAtividadeMutation.mutate(validatedForm);
 
       setForm({
-        titulo: '',
-        descricao: '',
-        status: '',
-        responsavel: '',
+        titulo: "",
+        descricao: "",
+        status: "",
+        responsavel: "",
       });
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
@@ -81,26 +91,26 @@ export default function AddAtividade() {
 
   const fields = [
     {
-      name: 'titulo',
-      label: 'Titulo',
+      name: "titulo",
+      label: "Titulo",
       icon: PersonAdd,
       required: true,
-      placeholder: 'Ex: Desenvolver API',
+      placeholder: "Ex: Desenvolver API",
       descricao: false,
     },
     {
-      name: 'descricao',
-      label: 'Descrição',
+      name: "descricao",
+      label: "Descrição",
       icon: DescriptionIcon,
       required: true,
-      placeholder: 'Ex: Desenvolver API utilizando Spring Boot',
+      placeholder: "Ex: Desenvolver API utilizando Spring Boot",
       descricao: true,
     },
   ];
 
   const selectOptions = [
-    { value: 'EM_ANDAMENTO', label: 'Em andamento' },
-    { value: 'FINALIZADA', label: 'Finalizada' },
+    { value: "EM_ANDAMENTO", label: "Em andamento" },
+    { value: "FINALIZADA", label: "Finalizada" },
   ];
 
   return (
@@ -112,7 +122,7 @@ export default function AddAtividade() {
           {/* Header */}
           <Box sx={headerContainer}>
             <Box sx={headerIconBox}>
-              <AssignmentIcon sx={{ fontSize: 32, color: 'white' }} />
+              <AssignmentIcon sx={{ fontSize: 32, color: "white" }} />
             </Box>
 
             <Typography variant="h4" sx={titleStyles}>
@@ -136,7 +146,7 @@ export default function AddAtividade() {
                 onChange={handleChange}
                 error={Boolean(errors[field.name])}
                 helperText={errors[field.name]}
-                type={field.type || 'text'}
+                type={field.type || "text"}
                 multiline={field.descricao}
                 rows={field.descricao ? 4 : 1}
                 placeholder={field.placeholder}
@@ -166,7 +176,7 @@ export default function AddAtividade() {
                   displayEmpty
                   sx={selectStyles}
                 >
-                  <MenuItem value={''}>Nenhum</MenuItem>
+                  <MenuItem value={""}>Nenhum</MenuItem>
                   {colaboradores.map((colaborador) => (
                     <MenuItem key={colaborador.id} value={colaborador.id}>
                       {colaborador.nomeCompleto}
@@ -185,7 +195,7 @@ export default function AddAtividade() {
               displayEmpty
               sx={selectStyles}
             >
-              <MenuItem value={'PENDENTE'}>Pendente</MenuItem>
+              <MenuItem value={"PENDENTE"}>Pendente</MenuItem>
               {selectOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
@@ -193,8 +203,15 @@ export default function AddAtividade() {
               ))}
             </Select>
 
-            <Button fullWidth type="submit" variant="contained" sx={buttonStyles}>
-              {isLoadingColaboradores ? 'Cadastrando...' : 'Cadastrar Atividade'}
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              sx={buttonStyles}
+            >
+              {isLoadingColaboradores
+                ? "Cadastrando..."
+                : "Cadastrar Atividade"}
             </Button>
           </Box>
         </>
@@ -204,7 +221,7 @@ export default function AddAtividade() {
         openAlertError={openAlertErrorAtividade}
         closeAlerts={closeAlerts}
         messageError={errorMessageAtividade}
-        messageSuccess={'Atividade adicionada com sucesso!'}
+        messageSuccess={"Atividade adicionada com sucesso!"}
       />
     </ContainerInterno>
   );

@@ -1,13 +1,15 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import AtividadesService from '../../services/Atividades/AtividadesService';
+import { useState, useEffect, useCallback } from "react";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import AtividadesService from "../../services/Atividades/AtividadesService";
 
 export default function useAtividades(params) {
   const getEnabled = params?.getEnabled ?? false;
+  const id = params?.id;
   const service = AtividadesService;
   const [openAlertErrorAtividade, setOpenAlertErrorAtividade] = useState(false);
-  const [openAlertSuccessAtividade, setOpenAlertSuccessAtividade] = useState(false);
-  const [errorMessageAtividade, setErrorMessageAtividade] = useState('');
+  const [openAlertSuccessAtividade, setOpenAlertSuccessAtividade] =
+    useState(false);
+  const [errorMessageAtividade, setErrorMessageAtividade] = useState("");
 
   const queryClient = useQueryClient();
 
@@ -21,7 +23,7 @@ export default function useAtividades(params) {
     isLoading: isLoadingAtividades,
     error: errorAtividades,
   } = useQuery({
-    queryKey: ['atividades'],
+    queryKey: ["atividades"],
     queryFn: service.getAtividades,
     retry: 1,
     refetchOnWindowFocus: false,
@@ -29,21 +31,23 @@ export default function useAtividades(params) {
   });
 
   const { data: atividade, isLoading: isLoadingAtividade } = useQuery({
-    queryKey: ['atividade'],
-    queryFn: () => service.getAtividade(params.id),
+    queryKey: ["atividade"],
+    queryFn: () => service.getAtividade(params?.id),
     retry: 1,
     refetchOnWindowFocus: false,
-    enabled: !!params.id,
+    enabled: !!id,
   });
 
   const addAtividadeMutation = useMutation({
     mutationFn: (atividade) => service.addAtividade(atividade),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['atividades'] });
+      queryClient.invalidateQueries({ queryKey: ["atividades"] });
       setOpenAlertSuccessAtividade(true);
     },
     onError: (error) => {
-      setErrorMessageAtividade(error.response?.data?.messages || 'Erro ao adicionar atividade');
+      setErrorMessageAtividade(
+        error.response?.data?.messages || "Erro ao adicionar atividade",
+      );
       setOpenAlertErrorAtividade(true);
     },
   });
@@ -51,18 +55,20 @@ export default function useAtividades(params) {
   const updateAtividadeMutation = useMutation({
     mutationFn: (atividade) => service.updateAtividade(params.id, atividade),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['atividades'] });
+      queryClient.invalidateQueries({ queryKey: ["atividades"] });
       setOpenAlertSuccessAtividade(true);
     },
     onError: (error) => {
-      setErrorMessageAtividade(error.response?.data?.messages || 'Erro ao atualizar atividade');
+      setErrorMessageAtividade(
+        error.response?.data?.messages || "Erro ao atualizar atividade",
+      );
       setOpenAlertErrorAtividade(true);
     },
   });
 
   useEffect(() => {
     if (getEnabled && errorAtividades) {
-      setErrorMessageAtividade('Erro ao carregar atividades');
+      setErrorMessageAtividade("Erro ao carregar atividades");
       setOpenAlertErrorAtividade(true);
     }
   }, [errorAtividades, getEnabled]);
