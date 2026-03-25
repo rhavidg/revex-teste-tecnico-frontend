@@ -8,7 +8,7 @@ import { Box, Typography } from '@mui/material';
 import { People } from '@mui/icons-material';
 import { headerContainer, headerIconBox, titleStyles } from '../../styles';
 import GridAcoes from '../../components/GridAcoes/GridAcoes';
-import ViewModal from '../../components/ViewModal/ViewModal';
+import ViewModalColaborador from '../../components/ViewModalColaborador/ViewModalColaborador';
 import InfoIcon from '@mui/icons-material/Info';
 
 export default function Colaboradores() {
@@ -40,6 +40,7 @@ export default function Colaboradores() {
         flex: 1,
         sortable: false,
         headerAlign: 'center',
+        minWidth: 250,
         renderCell: (params) => <GridAcoes paramsRow={params.row} handleViewBtn={handleViewBtn} />,
       },
     ];
@@ -92,7 +93,7 @@ export default function Colaboradores() {
           />
         </>
       )}
-      <ViewModal
+      <ViewModalColaborador
         open={viewModalOpen}
         onCancel={() => setViewModalOpen(false)}
         item={selectedItem}

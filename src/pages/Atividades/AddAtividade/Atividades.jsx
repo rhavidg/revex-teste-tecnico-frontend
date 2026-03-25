@@ -1,16 +1,15 @@
-import ContainerInterno from "../../../components/ContainerInterno/ContainerInterno";
-import useColaboradores from "../../../hooks/useColaboradores/useColaboradores";
-import { useState, useMemo, useCallback } from "react";
-import { ptBR } from "@mui/x-data-grid/locales";
-import { DataGrid } from "@mui/x-data-grid";
-import Loader from "../../../components/Loader/Loader";
-import { Box, Typography } from "@mui/material";
-import { People } from "@mui/icons-material";
-import { headerContainer, headerIconBox, titleStyles } from "../../../styles";
-import GridAcoes from "../../../components/GridAcoes/GridAcoes";
-import ViewModal from "../../../components/ViewModal/ViewModal";
-import InfoIcon from "@mui/icons-material/Info";
-import useAtividades from "../../../hooks/useAtividades/useAtividades";
+import ContainerInterno from '../../../components/ContainerInterno/ContainerInterno';
+import { useState, useMemo, useCallback } from 'react';
+import { ptBR } from '@mui/x-data-grid/locales';
+import { DataGrid } from '@mui/x-data-grid';
+import Loader from '../../../components/Loader/Loader';
+import { Box, Typography } from '@mui/material';
+import { People } from '@mui/icons-material';
+import { headerContainer, headerIconBox, titleStyles } from '../../../styles';
+import GridAcoes from '../../../components/GridAcoes/GridAcoes';
+import ViewModalAtividade from '../../../components/ViewModalAtividade/ViewModalAtividade';
+import InfoIcon from '@mui/icons-material/Info';
+import useAtividades from '../../../hooks/useAtividades/useAtividades';
 
 export default function Atividades() {
   const { atividades, isLoadingAtividades } = useAtividades({
@@ -26,38 +25,46 @@ export default function Atividades() {
 
   const columns = useMemo(() => {
     return [
-      { field: "id", headerName: "ID", width: 100 },
+      { field: 'id', headerName: 'ID', width: 100 },
       {
-        field: "titulo",
-        headerName: "Título",
+        field: 'titulo',
+        headerName: 'Título',
         width: 200,
       },
       {
-        field: "descricao",
-        headerName: "Descrição",
+        field: 'descricao',
+        headerName: 'Descrição',
         width: 400,
       },
       {
-        field: "responsavel",
-        headerName: "Responsável",
-        width: 200,
+        field: 'responsavel',
+        headerName: 'Responsável',
+        width: 180,
         renderCell: (params) => {
-          return params.row.responsavel?.nomeCompleto || "Não atribuído";
+          return params.row.responsavel?.nomeCompleto || 'Não atribuído';
         },
       },
       {
-        field: "status",
-        headerName: "Status",
-        width: 200,
+        field: 'status',
+        headerName: 'Status',
+        width: 180,
+        renderCell: (params) => {
+          return params.row.status === 'EM_ANDAMENTO' ? 'EM ANDAMENTO' : params.row.status;
+        },
       },
       {
-        field: "acoes",
-        headerName: "Ações",
+        field: 'acoes',
+        headerName: 'Ações',
         flex: 1,
         sortable: false,
-        headerAlign: "center",
+        headerAlign: 'center',
+        minWidth: 250,
         renderCell: (params) => (
-          <GridAcoes paramsRow={params.row} handleViewBtn={handleViewBtn} />
+          <GridAcoes
+            paramsRow={params.row}
+            handleViewBtn={handleViewBtn}
+            editPath={'/atividades/editar'}
+          />
         ),
       },
     ];
@@ -72,7 +79,7 @@ export default function Atividades() {
           {/* Header */}
           <Box sx={headerContainer}>
             <Box sx={headerIconBox}>
-              <People sx={{ fontSize: 32, color: "white" }} />
+              <People sx={{ fontSize: 32, color: 'white' }} />
             </Box>
 
             <Typography variant="h4" sx={titleStyles}>
@@ -83,15 +90,14 @@ export default function Atividades() {
               <InfoIcon
                 sx={(theme) => ({
                   background: theme.custom.gradient,
-                  color: "#fff",
-                  verticalAlign: "middle",
+                  color: '#fff',
+                  verticalAlign: 'middle',
                   mr: 1,
-                  borderRadius: "50%",
+                  borderRadius: '50%',
                 })}
               />
-              Para filtrar clique no cabeçalho de cada coluna. Para visualizar
-              os detalhes de um colaborador, clique no botão "Visualizar" na
-              coluna de ações.
+              Para filtrar clique no cabeçalho de cada coluna. Para visualizar os detalhes de um
+              colaborador, clique no botão "Visualizar" na coluna de ações.
             </Typography>
           </Box>
           <DataGrid
@@ -105,13 +111,13 @@ export default function Atividades() {
             localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
             sx={{
               border: 0,
-              marginTop: "20px",
-              width: "100%",
+              marginTop: '20px',
+              width: '100%',
             }}
           />
         </>
       )}
-      <ViewModal
+      <ViewModalAtividade
         open={viewModalOpen}
         onCancel={() => setViewModalOpen(false)}
         item={selectedItem}

@@ -28,6 +28,14 @@ export default function useAtividades(params) {
     enabled: !!getEnabled,
   });
 
+  const { data: atividade, isLoading: isLoadingAtividade } = useQuery({
+    queryKey: ['atividade'],
+    queryFn: () => service.getAtividade(params.id),
+    retry: 1,
+    refetchOnWindowFocus: false,
+    enabled: !!params.id,
+  });
+
   const addAtividadeMutation = useMutation({
     mutationFn: (atividade) => service.addAtividade(atividade),
     onSuccess: () => {
@@ -40,28 +48,14 @@ export default function useAtividades(params) {
     },
   });
 
-  const updateStatusMutation = useMutation({
-    mutationFn: (params) => service.updateStatus(params.id, params.status),
+  const updateAtividadeMutation = useMutation({
+    mutationFn: (atividade) => service.updateAtividade(params.id, atividade),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['atividades'] });
       setOpenAlertSuccessAtividade(true);
     },
     onError: (error) => {
-      setErrorMessageAtividade(
-        error.response?.data?.messages || 'Erro ao atualizar status da atividade',
-      );
-      setOpenAlertErrorAtividade(true);
-    },
-  });
-
-  const updateResponsavelMutation = useMutation({
-    mutationFn: (params) => service.updateResponsavel(params.id, params.responsavelId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['atividades'] });
-      setOpenAlertSuccessAtividade(true);
-    },
-    onError: (error) => {
-      setErrorMessageAtividade(error.response?.data?.messages || 'Erro ao adicionar atividade');
+      setErrorMessageAtividade(error.response?.data?.messages || 'Erro ao atualizar atividade');
       setOpenAlertErrorAtividade(true);
     },
   });
@@ -80,8 +74,9 @@ export default function useAtividades(params) {
     openAlertErrorAtividade,
     openAlertSuccessAtividade,
     addAtividadeMutation,
-    updateStatusMutation,
-    updateResponsavelMutation,
+    updateAtividadeMutation,
+    atividade,
+    isLoadingAtividade,
     closeAlerts,
   };
 }

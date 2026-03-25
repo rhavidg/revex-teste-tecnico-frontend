@@ -23,9 +23,9 @@ import {
   detailLabel,
   detailValue,
   dividerStyle,
-} from './ViewModal.styles';
+} from './ViewModalColaborador.styles';
 
-export default function ViewModal({ open, onCancel, item }) {
+export default function ViewModalColaborador({ open, onCancel, item }) {
   const details = [
     {
       label: 'Código',

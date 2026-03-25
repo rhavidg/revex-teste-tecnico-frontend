@@ -14,31 +14,36 @@ import {
 import { PersonAdd } from '@mui/icons-material';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import DescriptionIcon from '@mui/icons-material/Description';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import Alerts from '../../../components/Alerts/Alerts/Alerts';
 import AtividadeSchema from '../../../schemas/AtividadeSchema';
 
-import { textFieldStyles, inputStyles, iconStyles, selectStyles } from './AddAtividade.styles';
+import { textFieldStyles, inputStyles, iconStyles, selectStyles } from './EditAtividade.styles';
 import { headerContainer, headerIconBox, titleStyles, buttonStyles } from '../../../styles';
 import ContainerInterno from '../../../components/ContainerInterno/ContainerInterno';
+import { useParams } from 'react-router-dom';
 
-export default function AddAtividade() {
-  const { colaboradores, isLoadingColaboradores } = useColaboradores({
-    getEnabled: true,
-  });
+export default function EditAtividade() {
+  const { id } = useParams();
+
+  const { colaboradores, isLoadingColaboradores } = useColaboradores({ getEnabled: true });
+
   const {
-    addAtividadeMutation,
+    atividade,
+    isLoadingAtividade,
+    updateAtividadeMutation,
     openAlertSuccessAtividade,
     openAlertErrorAtividade,
     errorMessageAtividade,
     closeAlerts,
-  } = useAtividades();
+  } = useAtividades({ id: id });
+  console.log('ID', id);
 
   const [form, setForm] = useState({
     titulo: '',
     descricao: '',
-    status: 'PENDENTE',
+    status: '',
     responsavel: '',
   });
 
@@ -62,14 +67,7 @@ export default function AddAtividade() {
         responsavel: form.responsavel === '' ? null : { id: form.responsavel },
       };
       await AtividadeSchema.validate(validatedForm, { abortEarly: false });
-      addAtividadeMutation.mutate(validatedForm);
-
-      setForm({
-        titulo: '',
-        descricao: '',
-        status: '',
-        responsavel: '',
-      });
+      updateAtividadeMutation.mutate(validatedForm);
     } catch (err) {
       if (err instanceof Yup.ValidationError) {
         const formatted = {};
@@ -87,6 +85,7 @@ export default function AddAtividade() {
       required: true,
       placeholder: 'Ex: Desenvolver API',
       descricao: false,
+      disabled: true,
     },
     {
       name: 'descricao',
@@ -95,17 +94,30 @@ export default function AddAtividade() {
       required: true,
       placeholder: 'Ex: Desenvolver API utilizando Spring Boot',
       descricao: true,
+      disabled: true,
     },
   ];
 
   const selectOptions = [
+    { value: 'PENDENTE', label: 'Pendente' },
     { value: 'EM_ANDAMENTO', label: 'Em andamento' },
     { value: 'FINALIZADA', label: 'Finalizada' },
   ];
 
+  useEffect(() => {
+    if (atividade) {
+      setForm({
+        titulo: atividade.titulo || '',
+        descricao: atividade.descricao || '',
+        status: atividade.status || 'PENDENTE',
+        responsavel: atividade.responsavel ? atividade.responsavel.id : '',
+      });
+    }
+  }, [atividade]);
+
   return (
     <ContainerInterno>
-      {isLoadingColaboradores ? (
+      {isLoadingAtividade || isLoadingColaboradores ? (
         <Loader />
       ) : (
         <>
@@ -140,6 +152,7 @@ export default function AddAtividade() {
                 multiline={field.descricao}
                 rows={field.descricao ? 4 : 1}
                 placeholder={field.placeholder}
+                disabled={field.disabled}
                 InputLabelProps={field.InputLabelProps || {}}
                 InputProps={{
                   startAdornment: (
@@ -185,7 +198,6 @@ export default function AddAtividade() {
               displayEmpty
               sx={selectStyles}
             >
-              <MenuItem value={'PENDENTE'}>Pendente</MenuItem>
               {selectOptions.map((option) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}

@@ -10,6 +10,15 @@ const AtividadesService = {
       throw error;
     }
   },
+  async getAtividade(id) {
+    try {
+      const response = await axios.get(`${BASE_URL}/atividades/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Erro ao buscar atividade:', error);
+      throw error;
+    }
+  },
   async addAtividade(atividade) {
     try {
       const response = await axios.post(`${BASE_URL}/atividades`, atividade);
@@ -20,23 +29,12 @@ const AtividadesService = {
     }
   },
 
-  async updateStatus(id, status) {
+  async updateAtividade(id, atividade) {
     try {
-      const response = await axios.patch(`${BASE_URL}/atividades/${id}/status`, { status });
+      const response = await axios.patch(`${BASE_URL}/atividades/${id}`, atividade);
       return response.data;
     } catch (error) {
-      console.error('Erro ao atualizar status da atividade:', error);
-      throw error;
-    }
-  },
-  async updateResponsavel(id, responsavelId) {
-    try {
-      const response = await axios.patch(`${BASE_URL}/atividades/${id}/responsavel`, {
-        responsavelId,
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Erro ao atualizar responsável da atividade:', error);
+      console.error('Erro ao atualizar atividade:', error);
       throw error;
     }
   },
