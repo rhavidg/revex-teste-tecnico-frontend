@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -10,9 +10,13 @@ import {
   InputLabel,
   FormControl,
   OutlinedInput,
-} from '@mui/material';
-import { Login as LoginIcon, Visibility, VisibilityOff } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
+} from "@mui/material";
+import {
+  Login as LoginIcon,
+  Visibility,
+  VisibilityOff,
+} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
 import {
   container,
   paper,
@@ -21,19 +25,19 @@ import {
   forgotLink,
   registerContainer,
   registerLink,
-} from './Login.styles';
-import { headerContainer, titleStyles, buttonStyles } from '../../styles';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebaseConfig';
-import Alerts from '../../components/Alerts/Alerts/Alerts';
+} from "./Login.styles";
+import { headerContainer, titleStyles, buttonStyles } from "../../styles";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
+import Alerts from "../../components/Alerts/Alerts/Alerts";
 export default function Login() {
   const navigate = useNavigate();
   const [isRegister, setIsRegister] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [form, setForm] = useState({
-    email: '',
-    senha: '',
+    email: "",
+    senha: "",
   });
   const [openAlertError, setOpenAlertError] = useState(false);
   const [openAlertSuccess, setOpenAlertSuccess] = useState(false);
@@ -52,6 +56,7 @@ export default function Login() {
 
   const closeAlert = () => {
     setOpenAlertError(false);
+    setOpenAlertSuccess(false);
   };
 
   async function register() {
@@ -59,25 +64,29 @@ export default function Login() {
       await createUserWithEmailAndPassword(auth, form.email, form.senha);
       setOpenAlertSuccess(true);
       setForm({
-        email: '',
-        senha: '',
+        email: "",
+        senha: "",
       });
       setIsRegister(!isRegister);
     } catch (error) {
-      console.error('Erro:', error.message);
-      setErrorMessage(error.message || 'Erro ao criar usuário');
+      console.error("Erro:", error.message);
+      setErrorMessage(error.message || "Erro ao criar usuário");
       setOpenAlertError(true);
     }
   }
 
   async function login() {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, form.email, form.senha);
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        form.email,
+        form.senha,
+      );
 
-      console.log('Logado:', userCredential.user);
+      console.log("Logado:", userCredential.user);
     } catch (error) {
-      console.error('Erro:', error.message);
-      setErrorMessage(error.message || 'Erro ao fazer login');
+      console.error("Erro:", error.message);
+      setErrorMessage(error.message || "Erro ao fazer login");
       openAlertError(true);
     }
   }
@@ -86,9 +95,9 @@ export default function Login() {
     e.preventDefault();
     try {
       await login();
-      navigate('/atividades');
+      navigate("/atividades");
     } catch (error) {
-      console.error('Erro: ', error.message);
+      console.error("Erro: ", error.message);
     }
   };
 
@@ -97,7 +106,7 @@ export default function Login() {
       <Paper elevation={0} sx={paper}>
         <Box sx={headerContainer}>
           <Box sx={headerIconBox}>
-            <LoginIcon sx={{ fontSize: 32, color: 'white' }} />
+            <LoginIcon sx={{ fontSize: 32, color: "white" }} />
           </Box>
 
           {isRegister ? (
@@ -137,7 +146,7 @@ export default function Login() {
             <OutlinedInput
               id="senha"
               name="senha"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               value={form.senha}
               onChange={handleChange}
               endAdornment={
@@ -171,16 +180,25 @@ export default function Login() {
               Cadastrar
             </Button>
           ) : (
-            <Button fullWidth type="submit" variant="contained" sx={buttonStyles}>
+            <Button
+              fullWidth
+              type="submit"
+              variant="contained"
+              sx={buttonStyles}
+            >
               Entrar
             </Button>
           )}
 
           <Box sx={registerContainer}>
             <Typography variant="body2" color="text.secondary">
-              {!isRegister ? 'Não tem uma conta?' : 'Já tem uma conta?'}{' '}
-              <button type="button" style={registerLink} onClick={() => setIsRegister(!isRegister)}>
-                {!isRegister ? 'Cadastre-se' : 'Faça login'}
+              {!isRegister ? "Não tem uma conta?" : "Já tem uma conta?"}{" "}
+              <button
+                type="button"
+                style={registerLink}
+                onClick={() => setIsRegister(!isRegister)}
+              >
+                {!isRegister ? "Cadastre-se" : "Faça login"}
               </button>
             </Typography>
           </Box>
@@ -188,7 +206,7 @@ export default function Login() {
       </Paper>
       <Alerts
         openAlertSuccess={openAlertSuccess}
-        messageSuccess={'Usuário cadastrado com sucesso'}
+        messageSuccess={"Usuário cadastrado com sucesso"}
         openAlertError={openAlertError}
         closeAlerts={closeAlert}
         messageError={errorMessage}
