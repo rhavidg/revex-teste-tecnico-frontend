@@ -6,6 +6,7 @@ export default function Alerts({
   closeAlerts,
   openAlertError,
   messageError,
+  duration,
 }) {
   return (
     <>
@@ -13,12 +14,14 @@ export default function Alerts({
         openAlert={openAlertSuccess}
         handleCloseAlert={closeAlerts}
         message={messageSuccess}
+        duration={duration}
       />
 
       <AlertError
         openAlert={openAlertError}
         handleCloseAlert={closeAlerts}
         message={messageError}
+        duration={duration}
       />
     </>
   );

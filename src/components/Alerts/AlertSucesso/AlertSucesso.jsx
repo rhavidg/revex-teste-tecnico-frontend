@@ -1,10 +1,10 @@
 import { Snackbar, Alert } from '@mui/material';
 
-export default function AlertSucesso({ openAlert, handleCloseAlert, message }) {
+export default function AlertSucesso({ openAlert, handleCloseAlert, message, duration }) {
   return (
     <Snackbar
       open={openAlert}
-      autoHideDuration={1500}
+      autoHideDuration={duration || 1500}
       onClose={handleCloseAlert}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     >
