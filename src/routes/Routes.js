@@ -5,11 +5,12 @@ import AddAtividade from "../pages/Atividades/AddAtividade/AddAtividade";
 import Atividades from "../pages/Atividades/AddAtividade/Atividades";
 import EditAtividade from "../pages/Atividades/EditAtividade/EditAtividade";
 import NavLayout from "../components/NavLayout/NavLayout";
+import Login from "../pages/Login/Login";
 export default function AppRoutes() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Atividades />,
+      element: <Login />,
     },
     {
       element: <NavLayout />,

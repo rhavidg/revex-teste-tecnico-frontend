@@ -1,22 +1,22 @@
-import { createTheme } from '@mui/material/styles';
+import { createTheme } from "@mui/material/styles";
 
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#667eea',
+      main: "#667eea",
     },
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: '#d3d3d3',
+          backgroundColor: "	#F5F5F5",
         },
       },
     },
   },
   custom: {
-    gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
   },
 });
 
