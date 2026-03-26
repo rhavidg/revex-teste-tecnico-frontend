@@ -36,6 +36,7 @@ export default function Login() {
     senha: '',
   });
   const [openAlertError, setOpenAlertError] = useState(false);
+  const [openAlertSuccess, setOpenAlertSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -55,9 +56,13 @@ export default function Login() {
 
   async function register() {
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, form.email, form.senha);
-
-      console.log('Usuário criado:', userCredential.user);
+      await createUserWithEmailAndPassword(auth, form.email, form.senha);
+      setOpenAlertSuccess(true);
+      setForm({
+        email: '',
+        senha: '',
+      });
+      setIsRegister(!isRegister);
     } catch (error) {
       console.error('Erro:', error.message);
       setErrorMessage(error.message || 'Erro ao criar usuário');
@@ -173,15 +178,17 @@ export default function Login() {
 
           <Box sx={registerContainer}>
             <Typography variant="body2" color="text.secondary">
-              Não tem uma conta?{' '}
+              {!isRegister ? 'Não tem uma conta?' : 'Já tem uma conta?'}{' '}
               <button type="button" style={registerLink} onClick={() => setIsRegister(!isRegister)}>
-                Cadastre-se
+                {!isRegister ? 'Cadastre-se' : 'Faça login'}
               </button>
             </Typography>
           </Box>
         </Box>
       </Paper>
       <Alerts
+        openAlertSuccess={openAlertSuccess}
+        messageSuccess={'Usuário cadastrado com sucesso'}
         openAlertError={openAlertError}
         closeAlerts={closeAlert}
         messageError={errorMessage}
